@@ -177,7 +177,7 @@ Item {
             Layout.column: 0
 
             NIcon {
-              icon: "gpu-temperature"
+              icon: "flame"
               pointSize: iconSize
               applyUiScale: false
               x: Style.pixelAlignCenter(parent.width, width)

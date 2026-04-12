@@ -13,6 +13,15 @@ Item {
   property string gpuMemUsedGB: "0"
   property string gpuMemTotalGB: "0"
   property string gpuName: "Parsing..." // Initial placeholder
+
+  // History arrays for graphs
+  property var gpuTempHistory: []
+  property var gpuCoreUtilHistory: []
+  property var gpuMemPercentHistory: []
+  property int tempHistoryLength: 30
+  property int utilHistoryLength: 30
+  property int memHistoryLength: 30
+
   Timer {
     interval: 250
     running: true
@@ -65,6 +74,24 @@ Process {
         root.gpuMemTotalGB = (total / 1024).toFixed(2)
 
         root.gpuAvailable = true
+
+        // --- ADD HISTORY TRACKING ---
+        root.gpuTempHistory.push(temp)
+        root.gpuCoreUtilHistory.push(util)
+        root.gpuMemPercentHistory.push(root.gpuMemPercent)
+
+        // Limit history size
+        if (root.gpuTempHistory.length > tempHistoryLength) {
+          root.gpuTempHistory.shift()
+        }
+        if (root.gpuCoreUtilHistory.length > utilHistoryLength) {
+          root.gpuCoreUtilHistory.shift()
+        }
+        if (root.gpuMemPercentHistory.length > memHistoryLength) {
+          root.gpuMemPercentHistory.shift()
+        }
+        // ------------------------------
+
       } else {
         root.gpuAvailable = false
       }
