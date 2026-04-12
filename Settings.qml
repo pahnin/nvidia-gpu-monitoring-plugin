@@ -11,23 +11,13 @@ ColumnLayout {
   property var pluginApi: null
 
   // Local state - track changes before saving
-  property string valueMessage: pluginApi?.pluginSettings?.message || pluginApi?.manifest?.metadata?.defaultSettings?.message || ""
   property color valueBgColor: pluginApi?.pluginSettings?.backgroundColor || pluginApi?.manifest?.metadata?.defaultSettings?.backgroundColor || "transparent"
 
   spacing: Style.marginM
 
   Component.onCompleted: {
-    Logger.i("HelloWorld", "Settings UI loaded");
   }
 
-  NTextInput {
-    Layout.fillWidth: true
-    label: "Message"
-    description: "Custom message to display in the bar widget and panel"
-    placeholderText: "Enter a message..."
-    text: root.valueMessage
-    onTextChanged: root.valueMessage = text
-  }
 
   ColumnLayout {
     Layout.fillWidth: true
@@ -56,7 +46,6 @@ ColumnLayout {
     }
 
     // Update the plugin settings object
-    pluginApi.pluginSettings.message = root.valueMessage;
     pluginApi.pluginSettings.backgroundColor = root.valueBgColor.toString();
 
     // Save to disk
