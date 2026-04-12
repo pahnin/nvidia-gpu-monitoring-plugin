@@ -43,17 +43,15 @@ Item {
   Rectangle {
     id: panelContainer
     anchors.fill: parent
-
-    
     color: "transparent"
 
     ColumnLayout {
       Layout.fillWidth: true
       anchors {
         fill: parent
-        margins: Style.marginL
+        margins: Style.marginS
       }
-      spacing: Style.marginM
+      spacing: Style.marginS
 
       // Content area - GPU Monitoring with TimeCharts
       Rectangle {
@@ -61,11 +59,15 @@ Item {
         Layout.fillHeight: true
         color: Color.mSurfaceVariant
         radius: Style.radiusL
+        // anchors.fill: parent
 
         ColumnLayout {
-          anchors.centerIn: parent
-          spacing: Style.marginM
-
+          anchors.fill: parent
+          anchors.margins: Style.marginL
+          Layout.fillWidth: true
+          // spacing: Style.marginM
+          Layout.margins: Style.marginM
+          Layout.bottomMargin: Style.marginXS
           // Header
           RowLayout {
             Layout.fillWidth: true
@@ -105,10 +107,14 @@ Item {
           // --- Temperature with TimeChart ---
           NBox {
             Layout.fillWidth: true
+            color: Color.mSurface
+            anchors.margins: Style.marginXXS
+            
             Layout.preferredHeight: graphHeight + Style.marginM
             ColumnLayout {
               anchors.fill: parent
-              anchors.margins: Style.marginS
+              anchors.margins: Style.marginM
+              
               anchors.bottomMargin: Style.radiusM * 0.5
               spacing: Style.marginXS
               
@@ -154,6 +160,8 @@ Item {
           // --- Core Utilization with TimeChart ---
           NBox {
             Layout.fillWidth: true
+            color: Color.mSurface
+            anchors.margins: Style.marginXXS
             Layout.preferredHeight: graphHeight + Style.marginM
             ColumnLayout {
               anchors.fill: parent
@@ -205,6 +213,8 @@ Item {
           // --- Memory Usage with TimeChart ---
           NBox {
             Layout.fillWidth: true
+            color: Color.mSurface
+            anchors.margins: Style.marginXXS
             Layout.preferredHeight: graphHeight + Style.marginM
             ColumnLayout {
               anchors.fill: parent
