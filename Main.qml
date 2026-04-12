@@ -12,7 +12,7 @@ Item {
 
   property string gpuMemUsedGB: "0"
   property string gpuMemTotalGB: "0"
-
+  property string gpuName: "Parsing..." // Initial placeholder
   Timer {
     interval: 250
     running: true
@@ -22,10 +22,11 @@ Item {
 
 Process {
   id: gpuProcess
+  property string lastGpuName: "" // Cache the GPU name
 
   command: [
     "nvidia-smi",
-    "--query-gpu=memory.used,memory.total,utilization.gpu,temperature.gpu",
+    "--query-gpu=name,memory.used,memory.total,utilization.gpu,temperature.gpu",
     "--format=csv,noheader,nounits"
   ]
 
@@ -34,9 +35,23 @@ Process {
       let output = this.text.trim()
       if (!output) return
 
-      // "3560, 16311, 12, 38"
-      let parts = output.split(",")
+      // For output like "NVIDIA GeForce RTX 5060 Ti, 11462, 16311, 0, 37"
+      // The GPU name is everything before the FIRST comma
+      let firstCommaIndex = output.indexOf(',')
 
+      if (firstCommaIndex === -1) return // Shouldn't happen but safety check
+
+      let gpuName = output.substring(0, firstCommaIndex).trim()
+
+      // Only update cached name if it changed (optimization)
+      if (gpuProcess.lastGpuName !== gpuName) {
+        gpuProcess.lastGpuName = gpuName
+        root.gpuName = gpuName
+      }
+
+      // Parse memory and metrics from the rest (after first comma)
+      let dataPart = output.substring(firstCommaIndex + 1).trim()
+      let parts = dataPart.split(',')
       if (parts.length >= 4) {
         let used = parseFloat(parts[0])
         let total = parseFloat(parts[1])
@@ -45,13 +60,13 @@ Process {
 
         root.gpuTemp = temp
         root.gpuCoreUtil = util
-
-        root.gpuMemPercent = (used / total) * 100
-
+        root.gpuMemPercent = (total > 0) ? (used / total) * 100 : 0
         root.gpuMemUsedGB = (used / 1024).toFixed(2)
         root.gpuMemTotalGB = (total / 1024).toFixed(2)
 
         root.gpuAvailable = true
+      } else {
+        root.gpuAvailable = false
       }
     }
   }
@@ -59,7 +74,10 @@ Process {
   stderr: StdioCollector {}
 
   onExited: (code) => {
-    if (code !== 0) root.gpuAvailable = false
+    if (code !== 0) {
+      root.gpuAvailable = false
+      root.gpuName = "Unavailable" // Better than showing placeholder
+    }
   }
 }
 

@@ -73,7 +73,7 @@ Item {
 
     // GPU (if available)
     if (SystemStatService.gpuAvailable) {
-      rows.push([I18n.tr("system-monitor.gpu-temp"), `${Math.round(SystemStatService.gpuTemp)}°C`]);
+      rows.push([`${pluginApi.mainInstance.gpuName || "N/A"}`]);
     }
 
     return rows;
@@ -243,7 +243,7 @@ Item {
           NText {
             visible: true
             text: `${pluginApi.mainInstance.gpuMemPercent.toFixed(1)}% (${pluginApi.mainInstance.gpuMemUsedGB} / ${pluginApi.mainInstance.gpuMemTotalGB} GB)`
-            family: fontFamily
+            // family: fontFamily
             pointSize: barFontSize
             applyUiScale: false
             Layout.alignment: Qt.AlignCenter
@@ -266,7 +266,7 @@ Item {
     hoverEnabled: true
     onClicked: mouse => {
                  if (mouse.button === Qt.LeftButton) {
-                   PanelService.getPanel("systemStatsPanel", screen)?.toggle(root);
+                   pluginApi.openPanel(root.screen, root);
                    TooltipService.hide();
                  } else if (mouse.button === Qt.RightButton) {
                    TooltipService.hide();
