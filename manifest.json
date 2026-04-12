@@ -1,0 +1,27 @@
+{
+  "id": "nvidia-gpu-monitor",
+  "name": "NVIDIA GPU monitor Bar Widget",
+  "version": "1.0.0",
+  "minNoctaliaVersion": "4.1.2",
+  "author": "Phanindra Srungavarapu",
+  "official": false,
+  "license": "MIT",
+  "repository": "https://github.com/pahnin/nvidia-gpu-monitor-plugins",
+  "description": "This plugin provides a bar widget for monitoring NVIDIA GPU usage.",
+  "tags": ["nvidia", "gpu", "bar"],
+  "entryPoints": {
+    "main": "Main.qml",
+    "barWidget": "BarWidget.qml",
+    "panel": "Panel.qml",
+    "settings": "Settings.qml"
+  },
+  "dependencies": {
+    "plugins": []
+  },
+  "metadata": {
+    "defaultSettings": {
+      "message": "Hello World",
+      "backgroundColor": "#A9AEFE"
+    }
+  }
+}
