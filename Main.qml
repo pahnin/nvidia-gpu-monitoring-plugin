@@ -23,7 +23,7 @@ Item {
   property int memHistoryLength: 30
 
   Timer {
-    interval: 250
+    interval: 50
     running: true
     repeat: true
     onTriggered: gpuProcess.running = true
@@ -76,19 +76,21 @@ Process {
         root.gpuAvailable = true
 
         // --- ADD HISTORY TRACKING ---
-        root.gpuTempHistory.push(temp)
-        root.gpuCoreUtilHistory.push(util)
-        root.gpuMemPercentHistory.push(root.gpuMemPercent)
+        root.gpuTempHistory = [...root.gpuTempHistory, temp]
+        root.gpuCoreUtilHistory = [...root.gpuCoreUtilHistory, util]
+        root.gpuMemPercentHistory = [...root.gpuMemPercentHistory, root.gpuMemPercent]
 
         // Limit history size
         if (root.gpuTempHistory.length > tempHistoryLength) {
-          root.gpuTempHistory.shift()
+          root.gpuTempHistory = root.gpuTempHistory.slice(-tempHistoryLength)
         }
+
         if (root.gpuCoreUtilHistory.length > utilHistoryLength) {
-          root.gpuCoreUtilHistory.shift()
+          root.gpuCoreUtilHistory = root.gpuCoreUtilHistory.slice(-utilHistoryLength)
         }
+
         if (root.gpuMemPercentHistory.length > memHistoryLength) {
-          root.gpuMemPercentHistory.shift()
+          root.gpuMemPercentHistory = root.gpuMemPercentHistory.slice(-memHistoryLength)
         }
         // ------------------------------
 

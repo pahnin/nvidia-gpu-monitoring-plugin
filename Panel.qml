@@ -17,6 +17,10 @@ Item {
   property var gpuMemUsedGB: pluginApi?.mainInstance?.gpuMemUsedGB
   property var gpuMemTotalGB: pluginApi?.mainInstance?.gpuMemTotalGB
   property var gpuName: pluginApi?.mainInstance?.gpuName
+  property var gpuTempHistory: pluginApi.mainInstance.gpuTempHistory
+  property var gpuCoreUtilHistory: pluginApi.mainInstance.gpuCoreUtilHistory 
+  property var gpuMemPercentHistory: pluginApi.mainInstance.gpuMemPercentHistory
+
 
   // SmartPanel
   readonly property var geometryPlaceholder: panelContainer
@@ -145,7 +149,7 @@ Item {
               NGraph {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                values: pluginApi?.mainInstance?.gpuTempHistory || []
+                values: root.gpuTempHistory || []
                 minValue: Math.min(...(pluginApi?.mainInstance?.gpuTempHistory || [0, 50]), 0) - 5
                 maxValue: Math.max(...(pluginApi?.mainInstance?.gpuTempHistory || [30, 60]), 0) + 5
                 color: Color.mPrimary
@@ -196,7 +200,7 @@ Item {
               NGraph {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                values: pluginApi?.mainInstance?.gpuCoreUtilHistory || []
+                values: root.gpuCoreUtilHistory || []
                 minValue: 0
                 maxValue: 100
                 color: root.gpuCoreUtil > 90 ? "#E53935" : // Critical
@@ -249,7 +253,7 @@ Item {
               NGraph {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                values: pluginApi?.mainInstance?.gpuMemPercentHistory || []
+                values: root.gpuMemPercentHistory || []
                 minValue: 0
                 maxValue: 100
                 color: root.gpuMemPercent > 90 ? "#E53935" : // Critical
