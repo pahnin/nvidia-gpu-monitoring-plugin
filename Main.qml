@@ -18,9 +18,9 @@ Item {
   property var gpuTempHistory: []
   property var gpuCoreUtilHistory: []
   property var gpuMemPercentHistory: []
-  property int tempHistoryLength: 30
-  property int utilHistoryLength: 30
-  property int memHistoryLength: 30
+  property int tempHistoryLength: 40000   // ~30 min at 50ms
+  property int utilHistoryLength: 40000
+  property int memHistoryLength: 40000
 
   Timer {
     interval: 50
